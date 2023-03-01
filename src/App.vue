@@ -7,6 +7,8 @@
         <div class="currency-converter__item">
           <input
             type="number"
+w            min="0"
+            max="10000"
             class="currency-converter__input"
             v-model="firstRateValue"
           />
@@ -19,6 +21,7 @@
         <div class="currency-converter__item">
           <input
             type="number"
+            min="0"
             class="currency-converter__input"
             v-model="secondRateValue"
           />
@@ -112,8 +115,14 @@ export default {
     },
     addCurrency1(event) {
       this.currenciesPopup = !this.currenciesPopup;
-      this.secondConverterCurrencies.push(event.target.innerHTML);
-      this.firtsRatesCurrencies.push(this.currency[event.target.innerHTML]);
+  
+      if(!this.secondConverterCurrencies.includes(event.target.innerHTML)) {
+        this.secondConverterCurrencies.push(event.target.innerHTML);
+        this.firtsRatesCurrencies.push(this.currency[event.target.innerHTML].toFixed(2));
+      } else {
+        alert('Already added currency')
+      }
+
       this.currenciesPopup = !this.currenciesPopup;
 
       localStorage.setItem("currencies", this.secondConverterCurrencies);
@@ -127,7 +136,7 @@ export default {
           "https://api.freecurrencyapi.com/v1/latest?apikey=xAJJkg1XajGj4NYy7k7kr8VgVeZ4XaboF4g01Rr4"
         )
         .then((response) => {
-          this.currency = response.data.data;
+          this.currency = response.data.data
 
           this.firstConverterCurrencies = Object.keys(this.currency).filter(
             (el) => el === "USD"
@@ -153,12 +162,13 @@ export default {
                 el === "GBP" ||
                 el === "HKD"
               ) {
-                this.firtsExchangeCurrencies.push(this.currency[el]);
+                this.firtsExchangeCurrencies.push(this.currency[el].toFixed(2));
+                
               }
             }
           }
 
-          this.actualRates5 = Object.keys(this.currency);
+          this.actualRates5 = Object.keys(this.currency)
         });
     },
   },
@@ -198,7 +208,7 @@ export default {
         const storageRates = localStorage.rates.split(",");
         localStorage.rates.split(",").forEach((el, id) => {
           this.firtsRatesCurrencies.push(
-            (1 * (this.currency[val] / storageRates[id])).toFixed(6)
+            (1 * (this.currency[val] / storageRates[id])).toFixed(2)
           );
         });
       } else {
@@ -207,7 +217,7 @@ export default {
             (
               1 *
               (this.currency[val] / this.firtsExchangeCurrencies[id])
-            ).toFixed(6)
+            ).toFixed(2)
           );
         });
       }
