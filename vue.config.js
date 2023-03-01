@@ -1,3 +1,3 @@
-// module.exports = {
-//     publicPath: 'https://zidgmundfreid.github.io/converter-app-vue3/'
-// }
+module.exports = {
+    publicPath: 'https://zidgmundfreid.github.io/converter-app-vue3/'
+}
